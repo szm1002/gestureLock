@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>手势密码</title>
+    <style type="text/css">
+        body {
+            text-align: center;
+            background-color: #f0f0f2;
+        }
+        .title {
+            color: #22C3AA;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript" src="gestureLock.js"></script>
+    <script type="text/javascript">
+        new GestureLock({
+            chooseType: 3
+        }).init();
+    </script>
+</body>
+</html>
