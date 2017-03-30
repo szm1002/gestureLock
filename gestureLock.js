@@ -270,7 +270,7 @@
     }
 
     GestureLock.prototype.setChooseType = function(type){
-        chooseType = type;
+        this.chooseType = type;
         init();
     }
 
