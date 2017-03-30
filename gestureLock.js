@@ -1,8 +1,9 @@
 (function(){
-    window.GestureLock = function(obj){
-        this.height = obj.height;
-        this.width = obj.width;
-        this.chooseType = Number(window.localStorage.getItem('chooseType')) || obj.chooseType;
+    window.GestureLock = function(){
+        this.chooseType = Number(window.localStorage.getItem('chooseType')) || 3;
+        this.height;
+        this.width;
+        this.mode;
         this.devicePixelRatio = window.devicePixelRatio || 1;
 
     };
@@ -15,7 +16,6 @@
             spassword: JSON.parse(window.localStorage.getItem('passwordxx'))
         } : {};
         this.lastPoint = [];
-        this.makeState();
         this.touchFlag = false;
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
@@ -54,7 +54,7 @@
 
         document.body.appendChild(wrapper);
 
-        // 高清屏锁放
+        // 高清屏缩放
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
         canvas.height = height * this.devicePixelRatio;
@@ -93,7 +93,7 @@
         var self = this;
 
         this.canvas.addEventListener("touchstart", function (e) {
-            e.preventDefault();// 某些 android 的 touchmove 不宜触发 所以增加此行代码
+            e.preventDefault();// 某些 android 的 touchmove 不宜触发，所以增加此行代码
              var po = self.getPosition(e);
              console.log(po);
              for (var i = 0 ; i < self.arr.length ; i++) {
@@ -128,13 +128,18 @@
          }, false);
          document.getElementById('verifyPwd').addEventListener('click', function() {
             self.mode = 'verifyPwd'
+            if (!self.pswObj.spassword) {
+                document.getElementById('title').innerHTML = '还未输入手势密码，请先设置密码';
+            } else{
+                document.getElementById('title').innerHTML = '请绘制解锁图案';
+            }
          }, false);
 
     }
 
     // 初始化解锁密码面板
     GestureLock.prototype.drawCle = function(x, y) {
-        this.ctx.strokeStyle = '#CFE6FF';
+        this.ctx.strokeStyle = '#305066';
         this.ctx.lineWidth = 2;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.r, 0, Math.PI * 2, true);
@@ -264,19 +269,6 @@
 
     }
 
-    GestureLock.prototype.makeState = function() {
-        if (this.pswObj.step == 2) {
-            // document.getElementById('updatePassword').style.display = 'block';
-            // document.getElementById('title').innerHTML = '密码设置成功';
-        } else if (this.pswObj.step == 1) {
-            // document.getElementById('updatePassword').style.display = 'none';
-            // document.getElementById('title').innerHTML = '请再次输入手势密码';
-        } else {
-            // document.getElementById('updatePassword').style.display = 'none';
-            // document.getElementById('title').innerHTML = '请输入手势密码';
-        }
-    }
-
     GestureLock.prototype.setChooseType = function(type){
         chooseType = type;
         init();
@@ -291,7 +283,6 @@
     }
 
     GestureLock.prototype.reset = function() {
-        this.makeState();
         this.createCircle();
     }
 
